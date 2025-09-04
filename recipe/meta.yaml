@@ -10,42 +10,50 @@ source:
   sha256: 04564d1079f9ecff733818c74e22cec94d01531ee61844e13f0a2325203cad75
 
 build:
-  noarch: python
-  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   number: 0
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  skip: true  # [py<39]
 
 requirements:
   host:
-    - python {{ python_min }}
+    - python
     - pip
     - setuptools
     - hatchling
   run:
-    - python >={{ python_min }}
-    - pyhive >=0.7.0,<0.8.0
-    - dbt-adapters >=1.7,<2.0
+    - python
     - dbt-common >=1.10,<2.0
+    - dbt-adapters >=1.7,<2.0
+    - dbt-core >=1.8.0
     - sqlparams >=3.0.0
+  run_constrained:
+    - pyodbc >=5.1,<5.3
+    - pyhive >=0.7.0,<0.8.0
     - thrift >=0.13.0
     - pyspark >=3.0.0,<4.0.0
     - sqlparse >=0.4.2 # not directly required, pinned by Snyk to avoid a vulnerability
-    - dbt-core >=1.8.0
 
 test:
+  source_files:
+    - tests/unit
   imports:
-    - dbt
+    - dbt.adapters.spark
   commands:
     - pip check
+    - pytest -v tests/unit
   requires:
     - pip
-    - python {{ python_min }}
+    - pytest
 
 about:
-  home: https://github.com/dbt-labs/dbt-spark
+  home: https://github.com/dbt-labs/dbt-adapters/blob/main/dbt-spark
   summary: The Apache Spark adapter plugin for dbt
   license: Apache-2.0
+  license_family: Apache
   license_file: License.md
-
+  description: dbt-spark enables dbt to work with Apache Spark.
+  dev_url: https://github.com/dbt-labs/dbt-spark
+  doc_url: https://github.com/dbt-labs/dbt-adapters/blob/main/dbt-spark/README.md
 extra:
   recipe-maintainers:
     - rxm7706
