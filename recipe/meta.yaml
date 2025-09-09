@@ -52,7 +52,8 @@ about:
   license: Apache-2.0
   license_family: Apache
   license_file: License.md
-  description: dbt-spark enables dbt to work with Apache Spark.
+  description: |
+    dbt-spark enables dbt to work with Apache Spark.
   dev_url: https://github.com/dbt-labs/dbt-spark
   doc_url: https://github.com/dbt-labs/dbt-adapters/blob/main/dbt-spark/README.md
 extra:
