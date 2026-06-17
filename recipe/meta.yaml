@@ -1,43 +1,42 @@
 {% set name = "dbt-spark" %}
-{% set version = "1.9.3" %}
+{% set version = "1.10.2" %}
 
+# E   ModuleNotFoundError: No module named 'pyhive>=0.7'
+# All tests failed with
+# E   dbt_common.exceptions.base.DbtRuntimeError: Runtime Error
+# E   http connection method requires additional dependencies.
+# E   Install the additional required dependencies with `pip install dbt-spark[PyHive]`
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name.replace('-', '_') }}-{{ version }}.tar.gz
-  sha256: 04564d1079f9ecff733818c74e22cec94d01531ee61844e13f0a2325203cad75
+  sha256: 826e823b3a0bce5ba60e6315a42880c07553ae1a09efcf820d082c5980af2619
 
 build:
   number: 0
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-  skip: true  # [py<39]
+  skip: true  # [py<3100]
 
 requirements:
   host:
     - python
     - pip
-    - setuptools
     - hatchling
   run:
     - python
     - dbt-common >=1.10,<2.0
     - dbt-adapters >=1.7,<2.0
-    - dbt-core >=1.8.0
+    - dbt-core >=1.8.0rc1,<2.0
     - sqlparams >=3.0.0
   run_constrained:
     - pyodbc >=5.1,<5.3
-    - pyhive >=0.7.0,<0.8.0
-    - thrift >=0.13.0
-    - pyspark >=3.0.0,<4.0.0
-    - sqlparse >=0.4.2 # not directly required, pinned by Snyk to avoid a vulnerability
+    - PyHive >=0.7.0,<0.8.dev0
+    - thrift >=0.11.0,<0.17.0
+    - pyspark >=3.0.0,<5.0.0
+    - sqlparse >=0.4.2  # not directly required, pinned by Snyk to avoid a vulnerability
 
-# E   ModuleNotFoundError: No module named 'pyhive>=0.7'
-# All tests failed with 
-# E   dbt_common.exceptions.base.DbtRuntimeError: Runtime Error
-# E   http connection method requires additional dependencies. 
-# E   Install the additional required dependencies with `pip install dbt-spark[PyHive]`
 test:
   imports:
     - dbt.adapters.spark
@@ -56,6 +55,7 @@ about:
     dbt-spark enables dbt to work with Apache Spark.
   dev_url: https://github.com/dbt-labs/dbt-spark
   doc_url: https://github.com/dbt-labs/dbt-adapters/blob/main/dbt-spark/README.md
+
 extra:
   recipe-maintainers:
     - rxm7706
