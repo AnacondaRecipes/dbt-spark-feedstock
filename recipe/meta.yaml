@@ -17,7 +17,7 @@ source:
 build:
   number: 0
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-  skip: true  # [py<310]
+  skip: true  # [py<310 or py>313]  # dbt-common has no py314+ builds in main yet
 
 requirements:
   host:
