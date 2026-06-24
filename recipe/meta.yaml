@@ -9,10 +9,11 @@ source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name.replace('-', '_') }}-{{ version }}.tar.gz
   sha256: 826e823b3a0bce5ba60e6315a42880c07553ae1a09efcf820d082c5980af2619
 
+# dbt-adapters dep mashumaro has no py314 build (support added in mashumaro 3.17, https://github.com/Fatal1ty/mashumaro/pull/285)
 build:
   number: 0
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-  skip: true  # [py<310]
+  skip: true  # [py<310 or py>313]
 
 requirements:
   host:
