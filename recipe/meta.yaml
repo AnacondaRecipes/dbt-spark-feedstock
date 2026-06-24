@@ -1,11 +1,6 @@
 {% set name = "dbt-spark" %}
 {% set version = "1.10.2" %}
 
-# E   ModuleNotFoundError: No module named 'pyhive>=0.7'
-# All tests failed with
-# E   dbt_common.exceptions.base.DbtRuntimeError: Runtime Error
-# E   http connection method requires additional dependencies.
-# E   Install the additional required dependencies with `pip install dbt-spark[PyHive]`
 package:
   name: {{ name|lower }}
   version: {{ version }}
@@ -17,7 +12,7 @@ source:
 build:
   number: 0
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-  skip: true  # [py<310 or py>313]  # dbt-common has no py314+ builds in main yet
+  skip: true  # [py<310]
 
 requirements:
   host:
@@ -37,6 +32,11 @@ requirements:
     - pyspark >=3.0.0,<5.0.0
     - sqlparse >=0.4.2  # not directly required, pinned by Snyk to avoid a vulnerability
 
+# E   ModuleNotFoundError: No module named 'pyhive>=0.7'
+# All tests failed with
+# E   dbt_common.exceptions.base.DbtRuntimeError: Runtime Error
+# E   http connection method requires additional dependencies.
+# E   Install the additional required dependencies with `pip install dbt-spark[PyHive]`
 test:
   imports:
     - dbt.adapters.spark
